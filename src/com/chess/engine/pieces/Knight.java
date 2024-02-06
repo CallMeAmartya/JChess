@@ -56,4 +56,9 @@ public class Knight extends Piece {
     }
     return nextCoordinates;
   }
+
+  @Override
+  public String toString() {
+    return "N";
+  }
 }

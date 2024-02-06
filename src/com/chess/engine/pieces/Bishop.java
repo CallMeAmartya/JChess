@@ -29,7 +29,7 @@ public class Bishop extends Piece {
           legalMoves.add(new Move.MajorMove(this, currentIndex, board));
         } else {
           final Piece pieceAtCurrentIndex = tileForCurrentIndex.getPiece();
-            if (pieceAtCurrentIndex.getAlliance() != this.alliance) {
+          if (pieceAtCurrentIndex.getAlliance() != this.alliance) {
             legalMoves.add(new Move.AttackMove(this, currentIndex, board, pieceAtCurrentIndex));
           }
           break;
@@ -49,5 +49,10 @@ public class Bishop extends Piece {
       next2DCoordinate = next2DCoordinate.offsetCoordinate(vector[0], vector[1]);
     }
     return moves;
+  }
+
+  @Override
+  public String toString() {
+    return "B";
   }
 }

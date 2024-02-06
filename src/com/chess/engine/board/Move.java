@@ -15,6 +15,10 @@ public abstract class Move {
     this.board = board;
   }
 
+  public int getDestinationIndex() {
+    return destinationIndex;
+  }
+
   public static final class MajorMove extends Move {
     public MajorMove(Piece piece, int destinationIndex, Board board) {
       super(piece, destinationIndex, board);
