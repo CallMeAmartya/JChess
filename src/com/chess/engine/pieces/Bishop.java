@@ -29,10 +29,11 @@ public class Bishop extends Piece {
         if (!BoardUtils.isInBounds(next2DCoordinate)) {
           break;
         }
-        if (board.getTile(nextIndex).isTileOccupied()
-            && board.getTile(nextIndex).getPiece().getAlliance() != this.alliance) {
-          legalMoves.add(
-              new Move.AttackMove(this, nextIndex, board, board.getTile(nextIndex).getPiece()));
+        if (board.getTile(nextIndex).isTileOccupied()) {
+          if (board.getTile(nextIndex).getPiece().getAlliance() != this.alliance) {
+            legalMoves.add(
+                new Move.AttackMove(this, nextIndex, board, board.getTile(nextIndex).getPiece()));
+          }
           break;
         }
         legalMoves.add(new Move.MajorMove(this, nextIndex, board));
