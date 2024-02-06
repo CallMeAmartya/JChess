@@ -41,6 +41,18 @@ public final class BoardUtils {
   }
 
   public static int getPositionFrom2DCoordinate(TwoDimensionalCoordinate coordinate) {
+    if (!isInBounds(coordinate)) {
+      throw new PositionOutOfBoundsException(
+          "Position ("
+              + coordinate.getX()
+              + ","
+              + coordinate.getY()
+              + ") is not a valid coordinate for a "
+              + NUM_TILES_PER_ROW
+              + "x"
+              + NUM_TILES_PER_ROW
+              + " chess board!");
+    }
     return (coordinate.getX() * NUM_TILES_PER_ROW) + coordinate.getY();
   }
 }

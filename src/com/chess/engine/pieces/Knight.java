@@ -28,7 +28,6 @@ public class Knight extends Piece {
     for (final int candidate : nextCoordinates(this.pieceIndex)) {
       final Tile candidateDestinationTile = board.getTile(candidate);
       if (!candidateDestinationTile.isTileOccupied()) {
-        // todo -> move class needs to be implemented
         legalMoves.add(new MajorMove(this, candidate, board));
       } else {
         final Piece pieceAtDestination = candidateDestinationTile.getPiece();
