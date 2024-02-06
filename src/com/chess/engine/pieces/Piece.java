@@ -7,11 +7,11 @@ import java.util.Collection;
 
 public abstract class Piece {
 
-  protected final int piecePosition;
+  protected final int pieceIndex;
   protected final Alliance alliance;
 
-  public Piece(int piecePosition, Alliance alliance) {
-    this.piecePosition = piecePosition;
+  public Piece(int pieceIndex, Alliance alliance) {
+    this.pieceIndex = pieceIndex;
     this.alliance = alliance;
   }
 

@@ -2,6 +2,8 @@ package com.chess.engine.pieces;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
+import com.chess.engine.board.Move.AttackMove;
+import com.chess.engine.board.Move.MajorMove;
 import com.chess.engine.board.Tile;
 import com.chess.engine.board.TwoDimensionalCoordinate;
 import com.chess.engine.enums.Alliance;
@@ -23,16 +25,16 @@ public class Knight extends Piece {
   public Collection<Move> calculateMoves(Board board) {
     final Set<Move> legalMoves = new HashSet<>();
 
-    for (final int candidate : nextCoordinates(this.piecePosition)) {
+    for (final int candidate : nextCoordinates(this.pieceIndex)) {
       final Tile candidateDestinationTile = board.getTile(candidate);
       if (!candidateDestinationTile.isTileOccupied()) {
         // todo -> move class needs to be implemented
-        legalMoves.add(new Move());
+        legalMoves.add(new MajorMove(this, candidate, board));
       } else {
         final Piece pieceAtDestination = candidateDestinationTile.getPiece();
         final Alliance pieceAlliance = pieceAtDestination.getAlliance();
         if (this.alliance != pieceAlliance) {
-          legalMoves.add(new Move());
+          legalMoves.add(new AttackMove(this, candidate, board, pieceAtDestination));
         }
       }
     }
