@@ -2,14 +2,11 @@ package com.chess.engine.pieces;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
-import com.chess.engine.board.Tile;
+import com.chess.engine.board.TwoDimensionalCoordinate;
 import com.chess.engine.enums.Alliance;
 import com.chess.engine.utils.BoardUtils;
 import com.google.common.collect.ImmutableSet;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Bishop extends Piece {
 
@@ -24,23 +21,21 @@ public class Bishop extends Piece {
     Set<Move> legalMoves = new HashSet<>();
     for (int[] direction : DIRECTIONS) {
       int startingIndex = this.pieceIndex;
-      while (!board
-          .getTile(
-              BoardUtils.getPositionFrom2DCoordinate(
-                  BoardUtils.get2DCoordinateFromPosition(startingIndex)
-                      .offsetCoordinate(direction[0], direction[1])))
-          .isTileOccupied()) {
-        int nextIndex =
-            BoardUtils.getPositionFrom2DCoordinate(
-                BoardUtils.get2DCoordinateFromPosition(startingIndex)
-                    .offsetCoordinate(direction[0], direction[1]));
+      while (true) {
+        TwoDimensionalCoordinate next2DCoordinate =
+            BoardUtils.get2DCoordinateFromPosition(startingIndex)
+                .offsetCoordinate(direction[0], direction[1]);
+        int nextIndex = BoardUtils.getPositionFrom2DCoordinate(next2DCoordinate);
+        if (!BoardUtils.isInBounds(next2DCoordinate)) {
+          break;
+        }
+        if (board.getTile(nextIndex).isTileOccupied()) {
+          legalMoves.add(
+              new Move.AttackMove(this, nextIndex, board, board.getTile(nextIndex).getPiece()));
+          break;
+        }
         legalMoves.add(new Move.MajorMove(this, nextIndex, board));
         startingIndex = nextIndex;
-      }
-      if (board.getTile(startingIndex).getPiece().alliance != this.alliance) {
-        legalMoves.add(
-            new Move.AttackMove(
-                this, startingIndex, board, board.getTile(startingIndex).getPiece()));
       }
     }
     return ImmutableSet.copyOf(legalMoves);
