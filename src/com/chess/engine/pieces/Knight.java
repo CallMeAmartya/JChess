@@ -24,9 +24,6 @@ public class Knight extends Piece {
     final Set<Move> legalMoves = new HashSet<>();
 
     for (final int candidate : nextCoordinates(this.piecePosition)) {
-      if (!BoardUtils.isInBounds(candidate)) {
-        continue;
-      }
       final Tile candidateDestinationTile = board.getTile(candidate);
       if (!candidateDestinationTile.isTileOccupied()) {
         // todo -> move class needs to be implemented
@@ -39,6 +36,7 @@ public class Knight extends Piece {
         }
       }
     }
+
     return ImmutableSet.copyOf(legalMoves);
   }
 
