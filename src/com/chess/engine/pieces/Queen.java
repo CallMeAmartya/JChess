@@ -11,11 +11,13 @@ import com.chess.engine.utils.BoardUtils;
 import com.google.common.collect.ImmutableSet;
 import java.util.*;
 
-public class Bishop extends Piece {
+public class Queen extends Piece {
 
-  private static final int[][] DIRECTION_VECTORS = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+  private static final int[][] DIRECTION_VECTORS = {
+    {1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}
+  };
 
-  public Bishop(int pieceIndex, Alliance alliance) {
+  public Queen(int pieceIndex, Alliance alliance) {
     super(pieceIndex, alliance);
   }
 
@@ -55,6 +57,6 @@ public class Bishop extends Piece {
 
   @Override
   public String toString() {
-    return "B";
+    return "Q";
   }
 }

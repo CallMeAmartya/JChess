@@ -9,14 +9,21 @@ public abstract class Piece {
 
   protected final int pieceIndex;
   protected final Alliance alliance;
+  protected boolean firstMove;
 
   public Piece(int pieceIndex, Alliance alliance) {
     this.pieceIndex = pieceIndex;
     this.alliance = alliance;
+    // TODO: implementation pending here!
+    this.firstMove = false;
   }
 
   public Alliance getAlliance() {
-    return alliance;
+    return this.alliance;
+  }
+
+  public boolean isFirstMove() {
+    return this.firstMove;
   }
 
   public abstract Collection<Move> calculateMoves(Board board);

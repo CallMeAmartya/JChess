@@ -21,8 +21,24 @@ public class Knight extends Piece {
     super(piecePosition, alliance);
   }
 
+  private static Set<Integer> nextCoordinates(int position) {
+    final TwoDimensionalCoordinate twoDimensionalCoordinate =
+        BoardUtils.get2DCoordinateFromPosition(position);
+    final Set<Integer> nextCoordinates = new HashSet<>();
+    for (int i = 0; i < CANDIDATE_MOVE_OFFSET.length; i++) {
+      final int x = CANDIDATE_MOVE_OFFSET[i][0];
+      final int y = CANDIDATE_MOVE_OFFSET[i][1];
+      TwoDimensionalCoordinate next2DCoordinate = twoDimensionalCoordinate.offsetCoordinate(x, y);
+      if (!BoardUtils.isInBounds(next2DCoordinate)) {
+        continue;
+      }
+      nextCoordinates.add(BoardUtils.getPositionFrom2DCoordinate(next2DCoordinate));
+    }
+    return nextCoordinates;
+  }
+
   @Override
-  public Collection<Move> calculateMoves(Board board) {
+  public Collection<Move> calculateMoves(final Board board) {
     final Set<Move> legalMoves = new HashSet<>();
 
     for (final int candidate : nextCoordinates(this.pieceIndex)) {
@@ -39,22 +55,6 @@ public class Knight extends Piece {
     }
 
     return ImmutableSet.copyOf(legalMoves);
-  }
-
-  private Set<Integer> nextCoordinates(int position) {
-    TwoDimensionalCoordinate twoDimensionalCoordinate =
-        BoardUtils.get2DCoordinateFromPosition(position);
-    final Set<Integer> nextCoordinates = new HashSet<>();
-    for (int i = 0; i < CANDIDATE_MOVE_OFFSET.length; i++) {
-      final int x = CANDIDATE_MOVE_OFFSET[i][0];
-      final int y = CANDIDATE_MOVE_OFFSET[i][1];
-      TwoDimensionalCoordinate next2DCoordinate = twoDimensionalCoordinate.offsetCoordinate(x, y);
-      if (!BoardUtils.isInBounds(next2DCoordinate)) {
-        continue;
-      }
-      nextCoordinates.add(BoardUtils.getPositionFrom2DCoordinate(next2DCoordinate));
-    }
-    return nextCoordinates;
   }
 
   @Override
