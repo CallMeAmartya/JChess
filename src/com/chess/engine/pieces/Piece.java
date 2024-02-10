@@ -11,7 +11,7 @@ public abstract class Piece {
   protected final Alliance alliance;
   protected boolean firstMove;
 
-  public Piece(int pieceIndex, Alliance alliance) {
+  protected Piece(final int pieceIndex, final Alliance alliance) {
     this.pieceIndex = pieceIndex;
     this.alliance = alliance;
     // TODO: implementation pending here!
