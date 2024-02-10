@@ -7,10 +7,8 @@ import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.chess.engine.board.TwoDimensionalCoordinate;
 import com.chess.engine.enums.Alliance;
-import com.chess.engine.pieces.Bishop;
-import com.chess.engine.pieces.Knight;
+import com.chess.engine.pieces.*;
 import com.chess.engine.utils.BoardUtils;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,11 +46,13 @@ public class ChessTestKit {
     System.out.println("Select a chess piece to see its path!");
     int x = getIntInput("Enter the x-coordinate (0-7) of this piece: ");
     int y = getIntInput("Enter the y-coordinate (0-7) of this piece: ");
-    Tile tile = board.getTile(BoardUtils.getPositionFrom2DCoordinate(new TwoDimensionalCoordinate(x,y)));
+    Tile tile =
+        board.getTile(BoardUtils.getPositionFrom2DCoordinate(new TwoDimensionalCoordinate(x, y)));
     com.chess.engine.pieces.Piece piece = tile.getPiece();
     Collection<Move> moves = piece.calculateMoves(board);
     for (Move move : moves) {
-      TwoDimensionalCoordinate twoDimensionalCoordinate = BoardUtils.get2DCoordinateFromPosition(move.getDestinationIndex());
+      TwoDimensionalCoordinate twoDimensionalCoordinate =
+          BoardUtils.get2DCoordinateFromPosition(move.getDestinationIndex());
       int t_x = twoDimensionalCoordinate.getX();
       int t_y = twoDimensionalCoordinate.getY();
       sb[t_x][t_y] = "o";
@@ -95,15 +95,28 @@ public class ChessTestKit {
     return true;
   }
 
-  private static com.chess.engine.pieces.Piece getPieceFromChoice(Piece piece, int pieceIndex, String color) {
+  private static com.chess.engine.pieces.Piece getPieceFromChoice(
+      Piece piece, int pieceIndex, String color) {
     switch (piece) {
-        case BISHOP -> {
-            return new Bishop(pieceIndex, Alliance.valueOf(color));
-        }
-        case KNIGHT -> {
-            return new Knight(pieceIndex, Alliance.valueOf(color));
-        }
-        default -> {
+      case BISHOP -> {
+        return new Bishop(pieceIndex, Alliance.valueOf(color));
+      }
+      case KNIGHT -> {
+        return new Knight(pieceIndex, Alliance.valueOf(color));
+      }
+      case ROOK -> {
+        return new Rook(pieceIndex, Alliance.valueOf(color));
+      }
+      case QUEEN -> {
+        return new Queen(pieceIndex, Alliance.valueOf(color));
+      }
+      case PAWN -> {
+        return new Pawn(pieceIndex, Alliance.valueOf(color));
+      }
+      case KING -> {
+        return new King(pieceIndex, Alliance.valueOf(color));
+      }
+      default -> {
         return null;
       }
     }
@@ -120,7 +133,9 @@ public class ChessTestKit {
     String[][] sb = new String[NUM_TILES_PER_ROW][NUM_TILES_PER_ROW];
     for (int i = 0; i < NUM_TILES_PER_ROW; i++) {
       for (int j = 0; j < NUM_TILES_PER_ROW; j++) {
-        Tile tile = board.getTile(BoardUtils.getPositionFrom2DCoordinate(new TwoDimensionalCoordinate(i,j)));
+        Tile tile =
+            board.getTile(
+                BoardUtils.getPositionFrom2DCoordinate(new TwoDimensionalCoordinate(i, j)));
         if (!tile.isTileOccupied()) {
           sb[i][j] = getColoredText(tile.toString(), ANSI_YELLOW);
         } else {
