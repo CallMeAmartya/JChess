@@ -7,6 +7,7 @@ import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.chess.engine.board.TwoDimensionalCoordinate;
 import com.chess.engine.enums.Alliance;
+import com.chess.engine.exceptions.KingNotEstablishedException;
 import com.chess.engine.pieces.*;
 import com.chess.engine.utils.BoardUtils;
 import java.util.Collection;
@@ -29,7 +30,7 @@ public class ChessTestKit {
   private static final Scanner scanner = new Scanner(System.in);
   private static Board board;
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws KingNotEstablishedException {
     greetUser();
     while (true) {
       Board.BoardBuilder boardBuilder = new Board.BoardBuilder();

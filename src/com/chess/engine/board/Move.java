@@ -19,9 +19,16 @@ public abstract class Move {
     return destinationIndex;
   }
 
+  public abstract Board execute();
+
   public static final class MajorMove extends Move {
     public MajorMove(Piece piece, int destinationIndex, Board board) {
       super(piece, destinationIndex, board);
+    }
+
+    @Override
+    public Board execute() {
+      return null;
     }
   }
 
@@ -31,6 +38,11 @@ public abstract class Move {
     public AttackMove(Piece piece, int destinationIndex, Board board, Piece attackedPiece) {
       super(piece, destinationIndex, board);
       this.attackedPiece = attackedPiece;
+    }
+
+    @Override
+    public Board execute() {
+      return null;
     }
   }
 }

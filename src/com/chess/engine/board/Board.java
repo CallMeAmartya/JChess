@@ -4,6 +4,7 @@ import static com.chess.engine.utils.BoardUtils.NUM_TILES;
 import static com.chess.engine.utils.BoardUtils.NUM_TILES_PER_ROW;
 
 import com.chess.engine.enums.Alliance;
+import com.chess.engine.exceptions.KingNotEstablishedException;
 import com.chess.engine.pieces.*;
 import com.chess.engine.player.BlackPlayer;
 import com.chess.engine.player.Player;
@@ -18,8 +19,9 @@ public class Board {
   private final Collection<Piece> blackActivePieces;
   private final Player whitePlayer;
   private final Player blackPlayer;
+  private final Player currentPlayer;
 
-  private Board(BoardBuilder boardBuilder) {
+  private Board(BoardBuilder boardBuilder) throws KingNotEstablishedException {
     this.chessBoard = createChessBoard(boardBuilder);
     this.whiteActivePieces = calculateActivePieces(this.chessBoard, Alliance.WHITE);
     this.blackActivePieces = calculateActivePieces(this.chessBoard, Alliance.BLACK);
@@ -29,6 +31,8 @@ public class Board {
     // create players
     this.whitePlayer = new WhitePlayer(this, whiteLegalMoves, blackLegalMoves);
     this.blackPlayer = new BlackPlayer(this, blackLegalMoves, whiteLegalMoves);
+    // TODO: implement this!
+    this.currentPlayer = null;
   }
 
   private static Collection<Piece> calculateActivePieces(
@@ -50,8 +54,9 @@ public class Board {
     return ImmutableList.copyOf(tiles);
   }
 
-  public static Board createStandardChessboard() {
+  public static Board createStandardChessboard() throws KingNotEstablishedException {
     return new BoardBuilder()
+        // set black pieces
         .setPiece(new Rook(0, Alliance.BLACK))
         .setPiece(new Knight(1, Alliance.BLACK))
         .setPiece(new Bishop(2, Alliance.BLACK))
@@ -68,6 +73,7 @@ public class Board {
         .setPiece(new Pawn(13, Alliance.BLACK))
         .setPiece(new Pawn(14, Alliance.BLACK))
         .setPiece(new Pawn(15, Alliance.BLACK))
+        // set white pieces
         .setPiece(new Pawn(48, Alliance.WHITE))
         .setPiece(new Pawn(49, Alliance.WHITE))
         .setPiece(new Pawn(50, Alliance.WHITE))
@@ -84,6 +90,8 @@ public class Board {
         .setPiece(new Bishop(61, Alliance.WHITE))
         .setPiece(new Knight(62, Alliance.WHITE))
         .setPiece(new Rook(63, Alliance.WHITE))
+        // white to move
+        .setMoveMaker(Alliance.WHITE)
         .build();
   }
 
@@ -120,6 +128,18 @@ public class Board {
     return this.chessBoard.get(tileCoordinate);
   }
 
+  public Player getWhitePlayer() {
+    return this.whitePlayer;
+  }
+
+  public Player getBlackPlayer() {
+    return this.blackPlayer;
+  }
+
+  public Player getCurrentPlayer() {
+    return this.currentPlayer;
+  }
+
   public static final class BoardBuilder {
 
     Map<Integer, Piece> boardConfig;
@@ -140,7 +160,7 @@ public class Board {
       return this;
     }
 
-    public Board build() {
+    public Board build() throws KingNotEstablishedException {
       return new Board(this);
     }
   }
