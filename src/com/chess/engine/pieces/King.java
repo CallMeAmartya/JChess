@@ -22,7 +22,7 @@ public class King extends Piece {
   }
 
   @Override
-  public Collection<Move> calculateMoves(final Board board) {
+  public Collection<Move> calculateLegalMoves(final Board board) {
     Set<Move> legalMoves = new HashSet<>();
     for (final int[] offset : CANDIDATE_MOVE_OFFSETS) {
       final TwoDimensionalCoordinate currentCoordinate =
@@ -48,6 +48,6 @@ public class King extends Piece {
 
   @Override
   public String toString() {
-    return "K";
+    return PieceType.KING.toString();
   }
 }

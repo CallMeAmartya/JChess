@@ -1,5 +1,6 @@
 package com.chess.engine.board;
 
+import com.chess.engine.enums.Alliance;
 import com.chess.engine.pieces.Piece;
 import com.google.common.collect.ImmutableMap;
 import java.util.HashMap;
@@ -75,7 +76,9 @@ public abstract class Tile {
 
     @Override
     public String toString() {
-      return this.pieceOnTile.toString();
+      return this.pieceOnTile.getAlliance().equals(Alliance.WHITE)
+          ? this.pieceOnTile.toString()
+          : this.pieceOnTile.toString().toLowerCase();
     }
   }
 }

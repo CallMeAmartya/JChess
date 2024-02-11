@@ -22,7 +22,7 @@ public class Queen extends Piece {
   }
 
   @Override
-  public Collection<Move> calculateMoves(final Board board) {
+  public Collection<Move> calculateLegalMoves(final Board board) {
     final Set<Move> legalMoves = new HashSet<>();
     for (final int[] vector : DIRECTION_VECTORS) {
       List<TwoDimensionalCoordinate> movesForVector = getMovesForVector(vector);
@@ -57,6 +57,6 @@ public class Queen extends Piece {
 
   @Override
   public String toString() {
-    return "Q";
+    return PieceType.QUEEN.toString();
   }
 }
