@@ -22,8 +22,8 @@ To test the chess engine functionalities, follow these steps:
 
 ## Current Progress
 - Basic implementation for the board and tiles on the board has been completed.
-- Pieces such as Knight and Bishop have been implemented.
-- Currently working on implementing Rook and Queen.
+- All pieces have been implemented.
+- Currently working on implementing the player and move aspects of the game.
 
 ## Upcoming Features
 1. **GUI**: Implement a graphical user interface for better user interaction.
