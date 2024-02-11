@@ -27,15 +27,17 @@ public class ChessTestKit {
   public static final String ANSI_CYAN = "\u001B[36m";
   public static final String ANSI_WHITE = "\u001B[37m";
   private static final Scanner scanner = new Scanner(System.in);
-  private static final Board board = new Board();
+  private static Board board;
 
   public static void main(String[] args) {
     greetUser();
     while (true) {
-      if (!selectPiece()) {
+      Board.BoardBuilder boardBuilder = new Board.BoardBuilder();
+      if (!selectPiece(boardBuilder)) {
         continue;
       }
       if (!placeAdditionalPiece()) {
+        board = boardBuilder.build();
         String[][] sb = getAndPrintBoard();
         targetPiece(sb);
       }
@@ -49,7 +51,7 @@ public class ChessTestKit {
     Tile tile =
         board.getTile(BoardUtils.getPositionFrom2DCoordinate(new TwoDimensionalCoordinate(x, y)));
     com.chess.engine.pieces.Piece piece = tile.getPiece();
-    Collection<Move> moves = piece.calculateMoves(board);
+    Collection<Move> moves = piece.calculateLegalMoves(board);
     for (Move move : moves) {
       TwoDimensionalCoordinate twoDimensionalCoordinate =
           BoardUtils.get2DCoordinateFromPosition(move.getDestinationIndex());
@@ -71,7 +73,7 @@ public class ChessTestKit {
     System.out.println("Let's place some chess pieces on the board.\n");
   }
 
-  private static boolean selectPiece() {
+  private static boolean selectPiece(Board.BoardBuilder boardBuilder) {
     System.out.println("Select a chess piece:");
     Map<Integer, Piece> map = new HashMap<>();
     int count = 1;
@@ -91,7 +93,7 @@ public class ChessTestKit {
     int y = getIntInput("Enter the y-coordinate (0-7) on the board: ");
     // Place the piece on the board
     int pieceIndex = BoardUtils.getPositionFrom2DCoordinate(new TwoDimensionalCoordinate(x, y));
-    board.setTile(pieceIndex, getPieceFromChoice(map.get(choice), pieceIndex, color));
+    boardBuilder.setPiece(getPieceFromChoice(map.get(choice), pieceIndex, color));
     return true;
   }
 
