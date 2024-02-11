@@ -17,7 +17,7 @@ public class Pawn extends Piece {
   private static final int[][] CANDIDATE_MOVE_OFFSET = {{1, 0}, {1, 1}, {1, -1}, {2, 0}};
 
   public Pawn(int pieceIndex, Alliance alliance) {
-    super(pieceIndex, alliance);
+    super(PieceType.PAWN, pieceIndex, alliance);
   }
 
   @Override

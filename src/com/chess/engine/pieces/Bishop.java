@@ -16,7 +16,7 @@ public class Bishop extends Piece {
   private static final int[][] DIRECTION_VECTORS = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 
   public Bishop(int pieceIndex, Alliance alliance) {
-    super(pieceIndex, alliance);
+    super(PieceType.BISHOP, pieceIndex, alliance);
   }
 
   @Override

@@ -18,7 +18,7 @@ public class Queen extends Piece {
   };
 
   public Queen(int pieceIndex, Alliance alliance) {
-    super(pieceIndex, alliance);
+    super(PieceType.QUEEN, pieceIndex, alliance);
   }
 
   @Override

@@ -18,7 +18,7 @@ public class Knight extends Piece {
   };
 
   public Knight(int piecePosition, Alliance alliance) {
-    super(piecePosition, alliance);
+    super(PieceType.KNIGHT, piecePosition, alliance);
   }
 
   private static Set<Integer> nextCoordinates(int position) {

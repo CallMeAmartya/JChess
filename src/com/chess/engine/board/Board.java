@@ -5,6 +5,9 @@ import static com.chess.engine.utils.BoardUtils.NUM_TILES_PER_ROW;
 
 import com.chess.engine.enums.Alliance;
 import com.chess.engine.pieces.*;
+import com.chess.engine.player.BlackPlayer;
+import com.chess.engine.player.Player;
+import com.chess.engine.player.WhitePlayer;
 import com.google.common.collect.ImmutableList;
 import java.util.*;
 
@@ -13,6 +16,8 @@ public class Board {
   private final List<Tile> chessBoard;
   private final Collection<Piece> whiteActivePieces;
   private final Collection<Piece> blackActivePieces;
+  private final Player whitePlayer;
+  private final Player blackPlayer;
 
   private Board(BoardBuilder boardBuilder) {
     this.chessBoard = createChessBoard(boardBuilder);
@@ -21,6 +26,9 @@ public class Board {
     // calculate legal moves for both sided as soon as board is created
     Collection<Move> whiteLegalMoves = calculateLegalMoves(this.whiteActivePieces);
     Collection<Move> blackLegalMoves = calculateLegalMoves(this.blackActivePieces);
+    // create players
+    this.whitePlayer = new WhitePlayer(this, whiteLegalMoves, blackLegalMoves);
+    this.blackPlayer = new BlackPlayer(this, blackLegalMoves, whiteLegalMoves);
   }
 
   private static Collection<Piece> calculateActivePieces(
@@ -77,6 +85,14 @@ public class Board {
         .setPiece(new Knight(62, Alliance.WHITE))
         .setPiece(new Rook(63, Alliance.WHITE))
         .build();
+  }
+
+  public Collection<Piece> getWhiteActivePieces() {
+    return whiteActivePieces;
+  }
+
+  public Collection<Piece> getBlackActivePieces() {
+    return blackActivePieces;
   }
 
   @Override
