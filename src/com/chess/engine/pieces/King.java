@@ -22,6 +22,11 @@ public class King extends Piece {
   }
 
   @Override
+  public King movePiece(Move move) {
+    return new King(move.getDestinationIndex(), move.getPiece().getAlliance());
+  }
+
+  @Override
   public Collection<Move> calculateLegalMoves(final Board board) {
     Set<Move> legalMoves = new HashSet<>();
     for (final int[] offset : CANDIDATE_MOVE_OFFSETS) {

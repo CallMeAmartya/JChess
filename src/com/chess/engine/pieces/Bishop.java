@@ -20,6 +20,11 @@ public class Bishop extends Piece {
   }
 
   @Override
+  public Bishop movePiece(Move move) {
+    return new Bishop(move.getDestinationIndex(), move.getPiece().getAlliance());
+  }
+
+  @Override
   public Collection<Move> calculateLegalMoves(final Board board) {
     final Set<Move> legalMoves = new HashSet<>();
     for (final int[] vector : DIRECTION_VECTORS) {

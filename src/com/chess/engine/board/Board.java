@@ -32,7 +32,7 @@ public class Board {
     this.whitePlayer = new WhitePlayer(this, whiteLegalMoves, blackLegalMoves);
     this.blackPlayer = new BlackPlayer(this, blackLegalMoves, whiteLegalMoves);
     // TODO: implement this!
-    this.currentPlayer = null;
+    this.currentPlayer = boardBuilder.nextMoveMaker.getPlayer(this.whitePlayer, this.blackPlayer);
   }
 
   private static Collection<Piece> calculateActivePieces(

@@ -21,6 +21,11 @@ public class Knight extends Piece {
     super(PieceType.KNIGHT, piecePosition, alliance);
   }
 
+  @Override
+  public Knight movePiece(Move move) {
+    return new Knight(move.getDestinationIndex(), move.getPiece().getAlliance());
+  }
+
   private static Set<Integer> nextCoordinates(int position) {
     final TwoDimensionalCoordinate twoDimensionalCoordinate =
         BoardUtils.get2DCoordinateFromPosition(position);

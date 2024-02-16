@@ -8,23 +8,24 @@ import com.chess.engine.pieces.Piece;
 import java.util.Collection;
 
 public class BlackPlayer extends Player {
-  public BlackPlayer(Board board, Collection<Move> playerMoves, Collection<Move> opponentMoves)
+  public BlackPlayer(
+      final Board board, final Collection<Move> playerMoves, final Collection<Move> opponentMoves)
       throws KingNotEstablishedException {
     super(board, playerMoves, opponentMoves);
   }
 
   @Override
-  protected Collection<Piece> getActivePieces() {
+  public Collection<Piece> getActivePieces() {
     return this.board.getBlackActivePieces();
   }
 
   @Override
-  Alliance getAlliance() {
+  public Alliance getAlliance() {
     return Alliance.BLACK;
   }
 
   @Override
-  Player getOpponent() {
+  public Player getOpponent() {
     return this.board.getWhitePlayer();
   }
 }

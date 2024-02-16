@@ -21,6 +21,11 @@ public class Pawn extends Piece {
   }
 
   @Override
+  public Pawn movePiece(Move move) {
+    return new Pawn(move.getDestinationIndex(), move.getPiece().getAlliance());
+  }
+
+  @Override
   public Collection<Move> calculateLegalMoves(final Board board) {
     Set<Move> legalMoves = new HashSet<>();
     for (final int[] offset : CANDIDATE_MOVE_OFFSET) {

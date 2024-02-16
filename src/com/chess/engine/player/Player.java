@@ -92,9 +92,9 @@ public abstract class Player {
     return false;
   }
 
-  protected abstract Collection<Piece> getActivePieces();
+  public abstract Collection<Piece> getActivePieces();
 
-  abstract Alliance getAlliance();
+  public abstract Alliance getAlliance();
 
-  abstract Player getOpponent();
+  public abstract Player getOpponent();
 }
