@@ -46,6 +46,10 @@ public abstract class Player {
     throw new KingNotEstablishedException("A valid chess board can't be formed without it's King!");
   }
 
+  public Collection<Move> getPlayerMoves() {
+    return this.playerMoves;
+  }
+
   public boolean isMoveLegal(Move move) {
     return this.playerMoves.contains(move);
   }

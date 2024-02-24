@@ -11,6 +11,7 @@ public abstract class Piece {
   protected final int pieceIndex;
   protected final Alliance alliance;
   protected boolean firstMove;
+  private final int cachedHashCode;
 
   protected Piece(final PieceType pieceType, final int pieceIndex, final Alliance alliance) {
       this.pieceType = pieceType;
@@ -18,6 +19,30 @@ public abstract class Piece {
     this.alliance = alliance;
     // TODO: implementation pending here!
     this.firstMove = false;
+    this.cachedHashCode = calculateHashCode();
+  }
+
+  private int calculateHashCode() {
+    int result = this.pieceType.hashCode();
+    result = 31 * result + this.pieceIndex;
+    result = 31 * result + this.alliance.hashCode();
+    result = 31 * result + (this.firstMove ? 1 : 0);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Piece piece)) return false;
+    return this.pieceIndex == piece.getPieceIndex()
+        && this.firstMove == piece.isFirstMove()
+        && this.pieceType == piece.getPieceType()
+        && this.alliance == piece.getAlliance();
+  }
+
+  @Override
+  public int hashCode() {
+    return this.cachedHashCode;
   }
 
   public int getPieceIndex() {
