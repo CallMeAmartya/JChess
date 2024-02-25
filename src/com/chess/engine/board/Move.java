@@ -4,6 +4,7 @@ import com.chess.engine.exceptions.InstantiationNotAllowedException;
 import com.chess.engine.exceptions.NullMoveExecutionException;
 import com.chess.engine.pieces.Pawn;
 import com.chess.engine.pieces.Piece;
+import com.chess.engine.pieces.Rook;
 import java.util.Objects;
 
 public abstract class Move {
@@ -130,20 +131,95 @@ public abstract class Move {
   }
 
   abstract static class CastleMove extends Move {
-    private CastleMove(final Piece piece, final int destinationIndex, final Board board) {
+    protected final Rook castleRook;
+    protected final int castleRookStartIndex;
+    protected final int castleRookDestinationIndex;
+
+    private CastleMove(
+        final Piece piece,
+        final int destinationIndex,
+        final Board board,
+        final Rook castleRook,
+        final int castleRookStartIndex,
+        final int castleRookDestinationIndex) {
       super(piece, destinationIndex, board);
+      this.castleRook = castleRook;
+      this.castleRookStartIndex = castleRookStartIndex;
+      this.castleRookDestinationIndex = castleRookDestinationIndex;
+    }
+
+    public Rook getCastleRook() {
+      return this.castleRook;
+    }
+
+    @Override
+    public boolean isCastlingMove() {
+      return true;
+    }
+
+    @Override
+    public Board execute() {
+      final Board.BoardBuilder boardBuilder = new Board.BoardBuilder();
+      this.board.getCurrentPlayer().getActivePieces().stream()
+          .filter(
+              currentPlayerPiece ->
+                  !this.piece.equals(currentPlayerPiece)
+                      && !this.castleRook.equals(currentPlayerPiece))
+          .forEach(boardBuilder::setPiece);
+      this.board.getCurrentPlayer().getOpponent().getActivePieces().stream()
+          .forEach(boardBuilder::setPiece);
+      boardBuilder.setPiece(this.piece.movePiece(this));
+      // TODO: this new rook should have first_move=false
+      boardBuilder.setPiece(
+          new Rook(this.castleRookDestinationIndex, this.castleRook.getAlliance()));
+      boardBuilder.setMoveMaker(this.board.getCurrentPlayer().getOpponent().getAlliance());
+      return boardBuilder.build();
     }
   }
 
   public static final class KingSideCastleMove extends CastleMove {
-    public KingSideCastleMove(final Piece piece, final int destinationIndex, final Board board) {
-      super(piece, destinationIndex, board);
+    public KingSideCastleMove(
+        final Piece piece,
+        final int destinationIndex,
+        final Board board,
+        final Rook castleRook,
+        final int castleRookStartIndex,
+        final int castleRookDestinationIndex) {
+      super(
+          piece,
+          destinationIndex,
+          board,
+          castleRook,
+          castleRookStartIndex,
+          castleRookDestinationIndex);
+    }
+
+    @Override
+    public String toString() {
+      return "O-O";
     }
   }
 
   public static final class QueenSideCastleMove extends CastleMove {
-    public QueenSideCastleMove(final Piece piece, final int destinationIndex, final Board board) {
-      super(piece, destinationIndex, board);
+    public QueenSideCastleMove(
+        final Piece piece,
+        final int destinationIndex,
+        final Board board,
+        final Rook castleRook,
+        final int castleRookStartIndex,
+        final int castleRookDestinationIndex) {
+      super(
+          piece,
+          destinationIndex,
+          board,
+          castleRook,
+          castleRookStartIndex,
+          castleRookDestinationIndex);
+    }
+
+    @Override
+    public String toString() {
+      return "O-O-O";
     }
   }
 

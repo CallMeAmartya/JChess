@@ -7,6 +7,7 @@ import com.chess.engine.exceptions.KingNotEstablishedException;
 import com.chess.engine.pieces.King;
 import com.chess.engine.pieces.Piece;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,15 +23,19 @@ public abstract class Player {
       final Board board, final Collection<Move> playerMoves, final Collection<Move> opponentMoves)
       throws KingNotEstablishedException {
     this.board = board;
-    this.playerMoves = playerMoves;
+    this.playerMoves =
+        ImmutableSet.copyOf(
+            Iterables.concat(playerMoves, calculateKingCastles(playerMoves, opponentMoves)));
     this.playerKing = establishKing();
-    this.inCheck = !Player.getAttacksOnPiece(this.playerKing, opponentMoves).isEmpty();
+    this.inCheck =
+        !Player.getAttacksOnTile(this.playerKing.getPieceIndex(), opponentMoves).isEmpty();
   }
 
-  private static Collection<Move> getAttacksOnPiece(Piece piece, Collection<Move> opponentMoves) {
+  protected static Collection<Move> getAttacksOnTile(
+      final int pieceIndex, final Collection<Move> opponentMoves) {
     Set<Move> attackOnPieceMoves = new HashSet<>();
-    for (Move opponentMove : opponentMoves) {
-      if (opponentMove.getDestinationIndex() == piece.getPieceIndex()) {
+    for (final Move opponentMove : opponentMoves) {
+      if (opponentMove.getDestinationIndex() == pieceIndex) {
         attackOnPieceMoves.add(opponentMove);
       }
     }
@@ -66,7 +71,6 @@ public abstract class Player {
     return !isInCheck() && !hasEscapeMoves();
   }
 
-  // TODO: Implement these methods!!
   public boolean isCastled() {
     return false;
   }
@@ -77,8 +81,8 @@ public abstract class Player {
     }
     final Board transitionBoard = move.execute();
     final Collection<Move> kingAttacks =
-        Player.getAttacksOnPiece(
-            transitionBoard.getCurrentPlayer().getOpponent().playerKing,
+        Player.getAttacksOnTile(
+            transitionBoard.getCurrentPlayer().getOpponent().playerKing.getPieceIndex(),
             transitionBoard.getCurrentPlayer().playerMoves);
     if (!kingAttacks.isEmpty()) {
       return new MoveTransition(this.board, move, MoveStatus.LEAVES_PLAYER_IN_CHECK);
@@ -101,4 +105,7 @@ public abstract class Player {
   public abstract Alliance getAlliance();
 
   public abstract Player getOpponent();
+
+  public abstract Collection<Move> calculateKingCastles(
+      Collection<Move> playerMoves, Collection<Move> opponentMoves);
 }

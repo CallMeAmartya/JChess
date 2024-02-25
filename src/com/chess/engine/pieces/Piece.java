@@ -10,12 +10,12 @@ public abstract class Piece {
   protected final PieceType pieceType;
   protected final int pieceIndex;
   protected final Alliance alliance;
-  protected boolean firstMove;
   private final int cachedHashCode;
+  protected boolean firstMove;
 
   protected Piece(final PieceType pieceType, final int pieceIndex, final Alliance alliance) {
-      this.pieceType = pieceType;
-      this.pieceIndex = pieceIndex;
+    this.pieceType = pieceType;
+    this.pieceIndex = pieceIndex;
     this.alliance = alliance;
     // TODO: implementation pending here!
     this.firstMove = false;
@@ -71,16 +71,31 @@ public abstract class Piece {
       public boolean isKing() {
         return false;
       }
+
+      @Override
+      public boolean isRook() {
+        return false;
+      }
     },
     KING("K") {
       @Override
       public boolean isKing() {
         return true;
       }
+
+      @Override
+      public boolean isRook() {
+        return false;
+      }
     },
     KNIGHT("N") {
       @Override
       public boolean isKing() {
+        return false;
+      }
+
+      @Override
+      public boolean isRook() {
         return false;
       }
     },
@@ -89,10 +104,20 @@ public abstract class Piece {
       public boolean isKing() {
         return false;
       }
+
+      @Override
+      public boolean isRook() {
+        return false;
+      }
     },
     QUEEN("Q") {
       @Override
       public boolean isKing() {
+        return false;
+      }
+
+      @Override
+      public boolean isRook() {
         return false;
       }
     },
@@ -100,6 +125,11 @@ public abstract class Piece {
       @Override
       public boolean isKing() {
         return false;
+      }
+
+      @Override
+      public boolean isRook() {
+        return true;
       }
     };
 
@@ -115,5 +145,7 @@ public abstract class Piece {
     }
 
     public abstract boolean isKing();
+
+    public abstract boolean isRook();
   }
 }
