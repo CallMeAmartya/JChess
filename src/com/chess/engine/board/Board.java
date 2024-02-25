@@ -151,6 +151,7 @@ public class Board {
     Map<Integer, Piece> boardConfig;
 
     Alliance nextMoveMaker;
+    Pawn enPassantPawn;
 
     public BoardBuilder() {
       this.boardConfig = new HashMap<>();
@@ -168,6 +169,10 @@ public class Board {
 
     public Board build() throws KingNotEstablishedException {
       return new Board(this);
+    }
+
+    public void setEnPassantPawn(Pawn pawn) {
+      this.enPassantPawn = pawn;
     }
   }
 }
