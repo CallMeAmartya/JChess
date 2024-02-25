@@ -23,10 +23,10 @@ public abstract class Player {
       final Board board, final Collection<Move> playerMoves, final Collection<Move> opponentMoves)
       throws KingNotEstablishedException {
     this.board = board;
+    this.playerKing = establishKing();
     this.playerMoves =
         ImmutableSet.copyOf(
             Iterables.concat(playerMoves, calculateKingCastles(playerMoves, opponentMoves)));
-    this.playerKing = establishKing();
     this.inCheck =
         !Player.getAttacksOnTile(this.playerKing.getPieceIndex(), opponentMoves).isEmpty();
   }
