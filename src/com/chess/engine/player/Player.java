@@ -87,7 +87,7 @@ public abstract class Player {
     if (!kingAttacks.isEmpty()) {
       return new MoveTransition(this.board, move, MoveStatus.LEAVES_PLAYER_IN_CHECK);
     }
-    return new MoveTransition(this.board, move, MoveStatus.DONE);
+    return new MoveTransition(transitionBoard, move, MoveStatus.DONE);
   }
 
   private boolean hasEscapeMoves() {

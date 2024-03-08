@@ -9,6 +9,6 @@ public class JChess {
   public static void main(String[] args) throws KingNotEstablishedException {
     Board board = Board.createStandardChessboard();
     System.out.println(board);
-    Table table = new Table();
+    new Table();
   }
 }
