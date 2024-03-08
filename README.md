@@ -3,6 +3,9 @@
 ## Overview
 This project aims to develop a chess engine in Java. It provides functionalities to play chess, analyze moves, and test various aspects of the game.
 
+## Usage
+Simply clone the repository and run JChess.java to fire up the GUI. Please ensure you have jdk 17 on your machine, and add guava-19.0 as an external dependency to this project.
+
 ## Testing Guide
 To test the chess engine functionalities, follow these steps:
 
@@ -21,11 +24,9 @@ To test the chess engine functionalities, follow these steps:
 7. **Exit**: You can exit the testing kit at any time.
 
 ## Current Progress
-- Basic implementation for the board and tiles on the board has been completed.
-- All pieces have been implemented.
-- Currently working on implementing the player and move aspects of the game.
+- Most of the backend has been written. En-Passant logic is yet to coded.
+- Currently working on GUI aspect of the game.
 
 ## Upcoming Features
-1. **GUI**: Implement a graphical user interface for better user interaction.
-2. **Matches against AI**: Develop functionality to play matches against an AI opponent.
-3. **2 Player Matches**: Allow players to engage in matches against each other (human vs. human).
+1. **Matches against AI**: Develop functionality to play matches against an AI opponent.
+2. **2 Player Matches**: Allow players to engage in matches against each other (human vs. human).
