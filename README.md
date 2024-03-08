@@ -7,21 +7,7 @@ This project aims to develop a chess engine in Java. It provides functionalities
 Simply clone the repository and run JChess.java to fire up the GUI. Please ensure you have jdk 17 on your machine, and add guava-19.0 as an external dependency to this project.
 
 ## Testing Guide
-To test the chess engine functionalities, follow these steps:
-
-1. **Run the ChessTestKit**: Execute the `ChessTestKit` class to start the interactive CLI-based testing kit.
-   
-2. **Select Chess Piece**: Choose a chess piece from the list provided. You can select pieces like Bishop, Knight, etc.
-   
-3. **Specify Piece Color**: Indicate whether the selected piece is black or white.
-   
-4. **Place the Piece**: Enter the x and y coordinates (0-7) on the chessboard to place the selected piece.
-   
-5. **Additional Pieces**: Optionally, you can choose to place additional pieces or proceed to the next step.
-   
-6. **View Piece Path**: After placing the pieces, you can select a chess piece to see its possible moves on the board.
-   
-7. **Exit**: You can exit the testing kit at any time.
+To test the chess engine functionalities, simply run the GUI and play a game! Unit tests will be introduced in a future update.
 
 ## Current Progress
 - Most of the backend has been written. En-Passant logic is yet to coded.
