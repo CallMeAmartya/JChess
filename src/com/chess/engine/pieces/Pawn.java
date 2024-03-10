@@ -2,8 +2,7 @@ package com.chess.engine.pieces;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
-import com.chess.engine.board.Move.AttackMove;
-import com.chess.engine.board.Move.MajorMove;
+import com.chess.engine.board.Move.*;
 import com.chess.engine.board.TwoDimensionalCoordinate;
 import com.chess.engine.enums.Alliance;
 import com.chess.engine.utils.BoardUtils;
@@ -17,12 +16,16 @@ public class Pawn extends Piece {
   private static final int[][] CANDIDATE_MOVE_OFFSET = {{1, 0}, {1, 1}, {1, -1}, {2, 0}};
 
   public Pawn(int pieceIndex, Alliance alliance) {
-    super(PieceType.PAWN, pieceIndex, alliance);
+    super(PieceType.PAWN, pieceIndex, alliance, true);
+  }
+
+  public Pawn(int pieceIndex, Alliance alliance, boolean firstMove) {
+    super(PieceType.PAWN, pieceIndex, alliance, firstMove);
   }
 
   @Override
   public Pawn movePiece(Move move) {
-    return new Pawn(move.getDestinationIndex(), move.getPiece().getAlliance());
+    return new Pawn(move.getDestinationIndex(), move.getPiece().getAlliance(), false);
   }
 
   @Override
@@ -38,12 +41,12 @@ public class Pawn extends Piece {
         continue;
       }
       final int destinationIndex = BoardUtils.getPositionFrom2DCoordinate(destinationCoordinate);
-      // TODO: deal with pawn promotion!
+      // TODO: deal with pawn promotion and EnPassant!
       if (offset[1] == 0) {
         // when pawn is doing a non-attacking move
         if (offset[0] == 1 && !board.getTile(destinationIndex).isTileOccupied()) {
           // move pawn one tile forward
-          legalMoves.add(new MajorMove(this, destinationIndex, board));
+          legalMoves.add(new PawnMove(this, destinationIndex, board));
         }
         if (offset[0] == 2 && this.firstMove && !board.getTile(destinationIndex).isTileOccupied()) {
           final int behindDestinationIndex =
@@ -54,14 +57,15 @@ public class Pawn extends Piece {
             continue;
           }
           // move pawn two tiles forward if first move for pawn and no piece in front of pawn
-          legalMoves.add(new MajorMove(this, destinationIndex, board));
+          legalMoves.add(new PawnJump(this, destinationIndex, board));
         }
       } else {
         // attacking move for a pawn
         if (board.getTile(destinationIndex).isTileOccupied()) {
           final Piece pieceAtDestinationIndex = board.getTile(destinationIndex).getPiece();
           if (this.alliance != pieceAtDestinationIndex.getAlliance()) {
-            legalMoves.add(new AttackMove(this, destinationIndex, board, pieceAtDestinationIndex));
+            legalMoves.add(
+                new PawnAttackMove(this, destinationIndex, board, pieceAtDestinationIndex));
           }
         }
       }

@@ -16,12 +16,16 @@ public class Rook extends Piece {
   private static final int[][] DIRECTION_VECTORS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
   public Rook(int pieceIndex, Alliance alliance) {
-    super(PieceType.ROOK, pieceIndex, alliance);
+    super(PieceType.ROOK, pieceIndex, alliance, true);
+  }
+
+  public Rook(int pieceIndex, Alliance alliance, boolean firstMove) {
+    super(PieceType.ROOK, pieceIndex, alliance, firstMove);
   }
 
   @Override
   public Rook movePiece(Move move) {
-    return new Rook(move.getDestinationIndex(), move.getPiece().getAlliance());
+    return new Rook(move.getDestinationIndex(), move.getPiece().getAlliance(), false);
   }
 
   @Override

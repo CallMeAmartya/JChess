@@ -16,12 +16,16 @@ public class Bishop extends Piece {
   private static final int[][] DIRECTION_VECTORS = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 
   public Bishop(int pieceIndex, Alliance alliance) {
-    super(PieceType.BISHOP, pieceIndex, alliance);
+    super(PieceType.BISHOP, pieceIndex, alliance, true);
+  }
+
+  public Bishop(int pieceIndex, Alliance alliance, boolean firstMove) {
+    super(PieceType.BISHOP, pieceIndex, alliance, firstMove);
   }
 
   @Override
   public Bishop movePiece(Move move) {
-    return new Bishop(move.getDestinationIndex(), move.getPiece().getAlliance());
+    return new Bishop(move.getDestinationIndex(), move.getPiece().getAlliance(), false);
   }
 
   @Override

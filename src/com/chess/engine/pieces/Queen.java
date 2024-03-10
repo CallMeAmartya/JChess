@@ -18,12 +18,16 @@ public class Queen extends Piece {
   };
 
   public Queen(int pieceIndex, Alliance alliance) {
-    super(PieceType.QUEEN, pieceIndex, alliance);
+    super(PieceType.QUEEN, pieceIndex, alliance, true);
+  }
+
+  public Queen(int pieceIndex, Alliance alliance, boolean firstMove) {
+    super(PieceType.QUEEN, pieceIndex, alliance, firstMove);
   }
 
   @Override
   public Queen movePiece(Move move) {
-    return new Queen(move.getDestinationIndex(), move.getPiece().getAlliance());
+    return new Queen(move.getDestinationIndex(), move.getPiece().getAlliance(), false);
   }
 
   @Override

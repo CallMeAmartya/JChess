@@ -18,12 +18,16 @@ public class King extends Piece {
   };
 
   public King(int pieceIndex, Alliance alliance) {
-    super(PieceType.KING, pieceIndex, alliance);
+    super(PieceType.KING, pieceIndex, alliance, true);
+  }
+
+  public King(int pieceIndex, Alliance alliance, boolean firstMove) {
+    super(PieceType.KING, pieceIndex, alliance, firstMove);
   }
 
   @Override
   public King movePiece(Move move) {
-    return new King(move.getDestinationIndex(), move.getPiece().getAlliance());
+    return new King(move.getDestinationIndex(), move.getPiece().getAlliance(), false);
   }
 
   @Override

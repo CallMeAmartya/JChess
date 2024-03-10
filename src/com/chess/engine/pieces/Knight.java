@@ -18,7 +18,11 @@ public class Knight extends Piece {
   };
 
   public Knight(int piecePosition, Alliance alliance) {
-    super(PieceType.KNIGHT, piecePosition, alliance);
+    super(PieceType.KNIGHT, piecePosition, alliance, true);
+  }
+
+  public Knight(int piecePosition, Alliance alliance, boolean firstMove) {
+    super(PieceType.KNIGHT, piecePosition, alliance, firstMove);
   }
 
   private static Set<Integer> nextCoordinates(int position) {
@@ -39,7 +43,7 @@ public class Knight extends Piece {
 
   @Override
   public Knight movePiece(Move move) {
-    return new Knight(move.getDestinationIndex(), move.getPiece().getAlliance());
+    return new Knight(move.getDestinationIndex(), move.getPiece().getAlliance(), false);
   }
 
   @Override
