@@ -1,28 +1,31 @@
 package com.chess.gui;
 
 import com.chess.engine.board.Board;
+import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.utils.BoardUtils;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.*;
+
+import static com.chess.gui.Table.chessBoard;
 
 public class BoardPanel extends JPanel {
 
   private final List<TilePanel> boardTiles;
-  private Board chessBoard;
-  private Tile sourceTile;
-  private Tile destinationTile;
-  private Piece selectedPiece;
+  private static Tile sourceTile;
+  private static Tile destinationTile;
+  private static Piece selectedPiece;
 
-  BoardPanel(Board chessBoard) {
+  BoardPanel() {
     super(new GridLayout(8, 8));
-    this.chessBoard = chessBoard;
     boardTiles = new ArrayList<>();
     for (int i = 0; i < BoardUtils.NUM_TILES; i++) {
-      final TilePanel tilePanel = new TilePanel(this, i);
+      final TilePanel tilePanel = new TilePanel(i);
       boardTiles.add(tilePanel);
       add(tilePanel);
     }
@@ -30,38 +33,41 @@ public class BoardPanel extends JPanel {
     validate();
   }
 
-  public Tile getSourceTile() {
+  public static Tile getSourceTile() {
     return sourceTile;
   }
 
-  public void setSourceTile(Tile sourceTile) {
-    this.sourceTile = sourceTile;
+  public static void setSourceTile(Tile sourceTile) {
+    BoardPanel.sourceTile = sourceTile;
   }
 
-  public Tile getDestinationTile() {
+  public static Tile getDestinationTile() {
     return destinationTile;
   }
 
-  public void setDestinationTile(Tile destinationTile) {
-    this.destinationTile = destinationTile;
+  public static void setDestinationTile(Tile destinationTile) {
+    BoardPanel.destinationTile = destinationTile;
   }
 
-  public Piece getSelectedPiece() {
+  public static Piece getSelectedPiece() {
     return selectedPiece;
   }
 
-  public void setSelectedPiece(Piece selectedPiece) {
-    this.selectedPiece = selectedPiece;
+  public static void setSelectedPiece(Piece selectedPiece) {
+    BoardPanel.selectedPiece = selectedPiece;
   }
 
-  public Board getChessBoard() {
-    return chessBoard;
+  public static Collection<Move> movesForSelectedPiece() {
+    if (selectedPiece != null && selectedPiece.getAlliance().equals(chessBoard.getCurrentPlayer().getAlliance())) {
+      return selectedPiece.calculateLegalMoves(chessBoard);
+    }
+    return Collections.emptyList();
   }
 
   public void drawBoard(final Board board) {
-    this.chessBoard = board;
+    Table.chessBoard = board;
     removeAll();
-    for (TilePanel tilePanel : this.boardTiles) {
+    for (TilePanel tilePanel : Table.boardDirection.traverse(this.boardTiles)) {
       tilePanel.drawTile(board);
       add(tilePanel);
     }

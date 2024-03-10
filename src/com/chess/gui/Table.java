@@ -2,10 +2,7 @@ package com.chess.gui;
 
 import com.chess.engine.board.Board;
 import java.awt.*;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.*;
 
 public class Table {
 
@@ -15,9 +12,13 @@ public class Table {
   public static final Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
   public static final Color LIGHT_TILE_COLOR = Color.decode("#e3c06f");
   public static final Color DARK_TILE_COLOR = Color.decode("#b88a4a");
+  static BoardDirection boardDirection;
+  static BoardPanel boardPanel;
+  static Board chessBoard;
+  static boolean shouldHighlight;
 
   public Table() {
-    Board chessBoard = Board.createStandardChessboard();
+    chessBoard = Board.createStandardChessboard();
 
     JFrame gameFrame = new JFrame("JChess");
     gameFrame.setLayout(new BorderLayout());
@@ -26,7 +27,14 @@ public class Table {
     final JMenuBar menuBar = createMenuBar();
     gameFrame.setJMenuBar(menuBar);
 
-    BoardPanel boardPanel = new BoardPanel(chessBoard);
+    // set board orientation
+    boardDirection = BoardDirection.NORMAL;
+
+    // set highlight moves to true by default
+    shouldHighlight = true;
+
+    // set board
+    boardPanel = new BoardPanel();
     gameFrame.add(boardPanel, BorderLayout.CENTER);
     // Set frame properties
     gameFrame.setSize(OUTER_FRAME_DIMENSION);
@@ -39,6 +47,7 @@ public class Table {
   private JMenuBar createMenuBar() {
     final JMenuBar menuBar = new JMenuBar();
     menuBar.add(createFileMenu());
+    menuBar.add(createPreferencesMenu());
     return menuBar;
   }
 
@@ -53,5 +62,27 @@ public class Table {
     exit.addActionListener(e -> System.exit(0));
     fileMenu.add(exit);
     return fileMenu;
+  }
+
+  private JMenu createPreferencesMenu() {
+    final JMenu preferencesMenu = new JMenu("Preferences");
+    // Flip Board option
+    final JMenuItem flipBoard = new JMenuItem("Flip Board");
+    flipBoard.addActionListener(
+        e -> {
+          boardDirection = boardDirection.opposite();
+          boardPanel.drawBoard(chessBoard);
+        });
+    preferencesMenu.add(flipBoard);
+    preferencesMenu.addSeparator();
+    // Highlight Moves
+    final JCheckBoxMenuItem highlightMoves = new JCheckBoxMenuItem("Highlight Moves", true);
+    highlightMoves.addActionListener(
+        e -> {
+          shouldHighlight = highlightMoves.isSelected();
+          boardPanel.drawBoard(chessBoard);
+        });
+    preferencesMenu.add(highlightMoves);
+    return preferencesMenu;
   }
 }

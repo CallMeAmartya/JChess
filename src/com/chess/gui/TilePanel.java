@@ -1,5 +1,8 @@
 package com.chess.gui;
 
+import static com.chess.gui.Table.boardPanel;
+import static com.chess.gui.Table.chessBoard;
+
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
@@ -21,14 +24,12 @@ public class TilePanel extends JPanel {
   private final int tileId;
   private Tile tile;
   private Piece piece;
-  private Board chessBoard;
 
-  TilePanel(final BoardPanel boardPanel, final int tileId) {
+  TilePanel(final int tileId) {
     super(new GridBagLayout());
     this.tileId = tileId;
     setPreferredSize(Table.TILE_PANEL_DIMENSION);
-    this.chessBoard = boardPanel.getChessBoard();
-    this.tile = this.chessBoard.getTile(this.tileId);
+    this.tile = chessBoard.getTile(this.tileId);
     this.piece = this.tile.getPiece();
     assignTileColor();
     assignTileIcon();
@@ -38,31 +39,31 @@ public class TilePanel extends JPanel {
           @Override
           public void mouseClicked(final MouseEvent e) {
             if (SwingUtilities.isRightMouseButton(e)) {
-              boardPanel.setSourceTile(null);
-              boardPanel.setDestinationTile(null);
-              boardPanel.setSelectedPiece(null);
+              BoardPanel.setSourceTile(null);
+              BoardPanel.setDestinationTile(null);
+              BoardPanel.setSelectedPiece(null);
               System.out.println("cleared selection!\n");
             } else if (SwingUtilities.isLeftMouseButton(e)) {
               System.out.println("Left Mouse Click Registered\n");
-              if (boardPanel.getSourceTile() == null && piece != null) {
+              if (BoardPanel.getSourceTile() == null && piece != null) {
                 // first click on a non-empty tile
                 System.out.println("First click on non empty tile");
-                boardPanel.setSourceTile(tile);
-                boardPanel.setSelectedPiece(piece);
+                BoardPanel.setSourceTile(tile);
+                BoardPanel.setSelectedPiece(piece);
                 System.out.println("selected piece=" + piece + "\n");
-              } else if (boardPanel.getSourceTile() != null) {
+              } else if (BoardPanel.getSourceTile() != null) {
                 // second click with a selected piece
                 System.out.println(
                     "Trying to make a move from "
-                        + boardPanel.getSourceTile().getTileCoordinate()
+                        + BoardPanel.getSourceTile().getTileCoordinate()
                         + " with "
-                        + boardPanel.getSelectedPiece()
+                        + BoardPanel.getSelectedPiece()
                         + " to "
                         + tile.getTileCoordinate());
-                boardPanel.setDestinationTile(tile);
+                BoardPanel.setDestinationTile(tile);
                 final Move move =
                     Move.MoveFactory.createMove(
-                        boardPanel.getSourceTile().getTileCoordinate(),
+                        BoardPanel.getSourceTile().getTileCoordinate(),
                         tile.getTileCoordinate(),
                         chessBoard);
                 final MoveTransition transition = chessBoard.getCurrentPlayer().makeMove(move);
@@ -74,21 +75,21 @@ public class TilePanel extends JPanel {
                 }
                 System.out.println(
                     "moved piece="
-                        + boardPanel.getSelectedPiece()
+                        + BoardPanel.getSelectedPiece()
                         + " from "
-                        + boardPanel.getSourceTile().getTileCoordinate()
+                        + BoardPanel.getSourceTile().getTileCoordinate()
                         + " to "
                         + tile.getTileCoordinate()
                         + "\n");
-                boardPanel.setSourceTile(null);
-                boardPanel.setDestinationTile(null);
-                boardPanel.setSelectedPiece(null);
+                BoardPanel.setSourceTile(null);
+                BoardPanel.setDestinationTile(null);
+                BoardPanel.setSelectedPiece(null);
               }
               System.out.println("Refreshing board... \n");
-              SwingUtilities.invokeLater(() -> boardPanel.drawBoard(chessBoard));
             } else {
               System.out.println("Do nothing, invalid key press \n");
             }
+            SwingUtilities.invokeLater(() -> boardPanel.drawBoard(chessBoard));
           }
 
           @Override
@@ -116,10 +117,9 @@ public class TilePanel extends JPanel {
   }
 
   private void assignTileIcon() {
-    this.removeAll();
+    removeAll();
     if (this.tile.isTileOccupied()) {
-      String iconName =
-          piece.getAlliance().name().substring(0, 1) + "_" + piece.getPieceType().name();
+      String iconName = piece.getAlliance().name().charAt(0) + "_" + piece.getPieceType().name();
       try {
         // TODO: figure out a way to avoid hardcoding image size and use tile dimension to scale
         // image
@@ -133,11 +133,28 @@ public class TilePanel extends JPanel {
     }
   }
 
+  private void assignTileBorder() {
+    setBorder(null);
+    if (!Table.shouldHighlight) {
+      return;
+    }
+    for (Move move : BoardPanel.movesForSelectedPiece()) {
+      if (move.getDestinationIndex() == this.tileId) {
+        if (this.tile.isTileOccupied()) {
+          setBorder(BorderFactory.createLineBorder(Color.RED));
+        } else {
+          setBorder(BorderFactory.createLineBorder(Color.GREEN));
+        }
+      }
+    }
+  }
+
   public void drawTile(final Board board) {
-    this.chessBoard = board;
-    this.tile = this.chessBoard.getTile(this.tileId);
+    chessBoard = board;
+    this.tile = chessBoard.getTile(this.tileId);
     this.piece = this.tile.getPiece();
-    assignTileColor();
+//    assignTileColor();
+    assignTileBorder();
     assignTileIcon();
     validate();
     repaint();
